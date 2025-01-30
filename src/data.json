@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Do something now",
+    "task": "Do it now!",
+    "done": false
+  },
+  {
+    "name": "Do another thing later",
+    "task": "Do it Later...",
+    "done": false
+  },
+  {
+    "name": "Do nothing",
+    "task": "Never do it..?",
+    "done": true
+  },
+  {
+    "name": "New task",
+    "task": "Wash car",
+    "done": false
+  }
+]
