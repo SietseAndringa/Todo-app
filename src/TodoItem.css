@@ -1,0 +1,51 @@
+.todo-item {
+  list-style: none;
+  padding: 0.5rem 1rem 1rem 1rem;
+  margin-block: 1rem;
+  background-color: yellow;
+}
+
+.todo-item-done {
+  list-style: none;
+  background-color: lightgray;
+  padding: 0.5rem 1rem 1rem 1rem;
+  margin-block: 1rem;
+}
+
+.todo-item-done p {
+  text-decoration: line-through;
+}
+
+.task-title {
+  border-bottom: 1px solid black;
+}
+
+.task-title p {
+  margin: 0;
+}
+
+.bold-text {
+  font-weight: 600;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.task-description {
+  white-space: pre-line;
+}
+
+.green {
+  background-color: lightgreen;
+}
+
+.red {
+  background-color: lightcoral;
+}
+
+.blue {
+  background-color: lightskyblue;
+}

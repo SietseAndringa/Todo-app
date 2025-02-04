@@ -1,15 +1,31 @@
-function TodoItem(props) {
-  return (
-    <div>
-      <p>Task name: {props.todo.name}</p>
-      <p>Description: {props.todo.task}</p>
-      {props.todo.done ? <p>Task done!</p> : <p>Not done yet...</p>}
-      <button onClick={props.done}>Toggle Done</button>
-      <button onClick={props.edit}>Edit</button>
-      <button onClick={props.delete}>Delete</button>
+import "./TodoItem.css";
 
-      <hr />
-    </div>
+function TodoItem(props) {
+  let className = "todo-item";
+  if (props.todo.done) {
+    className = "todo-item-done";
+  }
+
+  return (
+    <li className={className}>
+      <div className="task-title">
+        <p className="bold-text">{props.todo.name}</p>
+      </div>
+      <div>
+        <p className="task-description"> {props.todo.task}</p>
+      </div>
+      <div className="buttons-container">
+        <button className="green" onClick={props.done}>
+          {"\u2714"}
+        </button>
+        <button className="blue" onClick={props.edit}>
+          {"\u270E"}
+        </button>
+        <button className="red" onClick={props.delete}>
+          {"\u2716"}
+        </button>
+      </div>
+    </li>
   );
 }
 
