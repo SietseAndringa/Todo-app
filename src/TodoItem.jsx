@@ -25,6 +25,9 @@ function TodoItem(props) {
           {"\u2716"}
         </button>
       </div>
+      <div>
+        <p>Created on: {props.todo.date}</p>
+      </div>
     </li>
   );
 }

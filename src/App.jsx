@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import TodoItem from "./TodoItem";
 import useSWR from "swr";
@@ -10,10 +10,9 @@ function App() {
   const [taskDescription, setTaskDescription] = useState("");
   const [nameUsed, setNameUsed] = useState(false);
   const [editMode, setEditMode] = useState(false);
-
   const [viewTaskMaker, setViewTaskMaker] = useState(false);
 
-  // Implement fetcher from https://swr.vercel.app/docs/getting-started
+  // SWR fetcher
 
   const fetcher = (...args) =>
     fetch(...args).then((res) =>
@@ -127,8 +126,12 @@ function App() {
       return;
     }
 
+    const currentDate = new Date().toLocaleString();
+
+    console.log(currentDate);
+
     const updatedTasks = [
-      { done: false, name: taskName, task: taskDescription },
+      { done: false, name: taskName, task: taskDescription, date: currentDate },
       ...todos,
     ];
     setTodos(updatedTasks);
