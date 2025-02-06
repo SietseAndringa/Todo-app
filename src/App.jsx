@@ -10,6 +10,7 @@ function App() {
   const [taskDescription, setTaskDescription] = useState("");
   const [nameUsed, setNameUsed] = useState(false);
   const [editMode, setEditMode] = useState(false);
+
   const [viewTaskMaker, setViewTaskMaker] = useState(false);
 
   // Implement fetcher from https://swr.vercel.app/docs/getting-started
@@ -20,13 +21,12 @@ function App() {
         // catch null from server
         let arr = [];
         data.map((item) => {
-          if (item === null) {
-            return;
-          } else {
+          if (item !== null) {
             arr.push(item);
           }
         });
         setTodos(arr);
+        return arr;
       })
     );
   const { data, error, isLoading } = useSWR(
@@ -63,13 +63,22 @@ function App() {
   function editTask(name) {
     setEditMode(true);
     setViewTaskMaker(true);
+    // set input values to old task:
     const getTask = todos.find((todo) => todo.name === name);
     console.log(getTask);
-    setTodos(deleteTask(getTask.name));
     setTaskName(getTask.name);
     console.log(taskName);
     setTaskDescription(getTask.task);
     console.log(taskDescription);
+    // filter out old task from array:
+    const filtered = todos.filter((todo) => todo.name !== name);
+    console.log(filtered);
+    setTodos(filtered);
+  }
+
+  function cancelEdit() {
+    setTodos(data);
+    setViewTaskMaker(false);
   }
 
   // Deletet task function:
@@ -77,8 +86,11 @@ function App() {
   function deleteTask(name) {
     const filtered = todos.filter((todo) => todo.name !== name);
     console.log(filtered);
+    setTodos(filtered);
     return filtered;
   }
+
+  // Save to backend
 
   function saveToBackend() {
     fetch("https://todo-list-sa-default-rtdb.firebaseio.com/.json", {
@@ -146,7 +158,7 @@ function App() {
               handleNameChange={handleNameChange}
               handleDescriptionChange={handleDescriptionChange}
               onFormSubmit={onFormSubmit}
-              cancel={() => setViewTaskMaker(false)}
+              cancel={cancelEdit}
             />
           ) : (
             <div>
@@ -166,7 +178,7 @@ function App() {
                       key={todo.name}
                       todo={todo}
                       done={() => setTodos(toggleDone(todo.name))}
-                      delete={() => setTodos(deleteTask(todo.name))}
+                      delete={() => deleteTask(todo.name)}
                       edit={() => editTask(todo.name)}
                     />
                   ) : (

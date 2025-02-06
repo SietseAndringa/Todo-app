@@ -43,7 +43,7 @@ function MakeTask(props) {
             />
           </div>
           <div className="buttons-container">
-            <button className="red" onClick={props.cancel}>
+            <button type="button" className="red" onClick={props.cancel}>
               Cancel
             </button>
             {props.editMode ? (
