@@ -1,22 +1,54 @@
-[
-  {
-    "name": "Do something now",
-    "task": "Do it now!",
-    "done": false
-  },
-  {
-    "name": "Do another thing later",
-    "task": "Do it Later...",
-    "done": false
-  },
-  {
-    "name": "Do nothing",
-    "task": "Never do it..?",
-    "done": true
-  },
-  {
-    "name": "New task",
-    "task": "Wash car",
-    "done": false
+{
+  "users": {
+    "nzp7mcxITdWQSpyFdDkpcZyzu5G2": {
+      "tasks": [
+        {
+          "date": "6-2-2025, 16:38:37",
+          "done": false,
+          "name": "What to do with this app next 1",
+          "task": "- make responsive\n- make login function"
+        },
+        {
+          "date": "6-2-2025, 16:38:37",
+          "done": false,
+          "name": "What to do with this app next 2",
+          "task": "- make responsive\n- make login function"
+        },
+        {
+          "date": "6-2-2025, 16:38:37",
+          "done": false,
+          "name": "What to do with this app next 3",
+          "task": "- make responsive\n- make login function"
+        }
+      ]
+    },
+    "mMs80QX3vtUXDtJ6t8PLqAYOWC33": {
+      "tasks": [
+        {
+          "date": "6-2-2025, 16:38:37",
+          "done": false,
+          "name": "What to do with this app next 4",
+          "task": "- make responsive\n- make login function"
+        }
+      ]
+    }
+    
   }
-]
+}
+
+new user:
+
+`https://todo-list-sa-default-rtdb.firebaseio.com/users/${userId}.json`
+
+body:
+
+{
+      "tasks": [
+        {
+          "date": "",
+          "done": false,
+          "name": "Example",
+          "task": "This is an example."
+        }
+      ]
+    }

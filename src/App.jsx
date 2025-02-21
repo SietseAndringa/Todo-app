@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import TodoItem from "./TodoItem";
-import useSWR from "swr";
 import MakeTask from "./MakeTask";
+import { Link } from "react-router";
+import { auth } from "./firebase.js";
+import { onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -11,31 +13,69 @@ function App() {
   const [nameUsed, setNameUsed] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [viewTaskMaker, setViewTaskMaker] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState("");
+  const [noTasks, setNoTasks] = useState(false);
+  const [error, setError] = useState(false);
 
-  // SWR fetcher
+  const fetchTasks = async (userId) => {
+    try {
+      const response = await fetch(
+        `https://todo-list-sa-default-rtdb.firebaseio.com/users/${userId}/tasks.json`
+      );
+      if (!response.ok) {
+        console.log("Fuck this server man!");
+        setError(true);
+        return;
+      }
+      const json = await response.json();
+      const data = await json;
+      console.log(data);
+      if (!data) {
+        console.log("no data");
+        setNoTasks(true);
+        return;
+      }
+      let arr = [];
+      data.map((item) => {
+        if (item !== null) {
+          arr.push(item);
+        }
+      });
+      setTodos(arr);
+    } catch (error) {
+      console.error("Catch error message: " + error.message);
+    }
+  };
 
-  const fetcher = (...args) =>
-    fetch(...args).then((res) =>
-      res.json().then((data) => {
-        // catch null from server
-        let arr = [];
-        data.map((item) => {
-          if (item !== null) {
-            arr.push(item);
-          }
-        });
-        setTodos(arr);
-        return arr;
-      })
-    );
-  const { data, error, isLoading } = useSWR(
-    "https://todo-list-sa-default-rtdb.firebaseio.com/.json",
-    fetcher
-  );
+  // User info
+  function fetchUser() {
+    useEffect(() => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/auth.user
+          const uid = user.uid;
+          console.log(uid);
+          setUserId(uid);
+          console.log(user.email);
+          setUserName(user.email);
+          // Fetch data:
+          fetchTasks(uid);
+        } else {
+          // User is signed out
+          // ...
+        }
+      });
+    }, []);
 
-  if (error) {
-    console.log("Server error");
+    // if (error) {
+    //   console.log("Data Server error");
+    //   console.error(error);
+    // }
   }
+
+  fetchUser();
 
   // Toggle done function
 
@@ -91,14 +131,19 @@ function App() {
 
   // Save to backend
 
+  // Old path: "https://todo-list-sa-default-rtdb.firebaseio.com/.json"
+
   function saveToBackend() {
-    fetch("https://todo-list-sa-default-rtdb.firebaseio.com/.json", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(todos),
-    })
+    fetch(
+      `https://todo-list-sa-default-rtdb.firebaseio.com/users/${userId}/tasks.json`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(todos),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -165,6 +210,11 @@ function App() {
             />
           ) : (
             <div>
+              <nav className="nav-container">
+                <Link to="login">Login</Link>
+                <Link to="register">Create account</Link>
+              </nav>
+              <p>Logged in as: {userName}</p>
               <div className="header-container">
                 <h2>Task List:</h2>
                 <button
@@ -174,21 +224,26 @@ function App() {
                   New task
                 </button>
               </div>
-              <ul>
-                {todos.map((todo) =>
-                  todo ? (
-                    <TodoItem
-                      key={todo.name}
-                      todo={todo}
-                      done={() => setTodos(toggleDone(todo.name))}
-                      delete={() => deleteTask(todo.name)}
-                      edit={() => editTask(todo.name)}
-                    />
-                  ) : (
-                    ""
-                  )
-                )}
-              </ul>
+              {noTasks ? (
+                <p>No tasks to show</p>
+              ) : (
+                <ul>
+                  {todos.map((todo) =>
+                    todo ? (
+                      <TodoItem
+                        key={todo.name}
+                        todo={todo}
+                        done={() => setTodos(toggleDone(todo.name))}
+                        delete={() => deleteTask(todo.name)}
+                        edit={() => editTask(todo.name)}
+                      />
+                    ) : (
+                      ""
+                    )
+                  )}
+                </ul>
+              )}
+
               <button className="green" onClick={saveToBackend}>
                 Save to Server
               </button>

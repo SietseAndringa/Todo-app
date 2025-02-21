@@ -1,0 +1,20 @@
+stappenplan login:
+
+test accounts:
+
+andringa.sietse@gmail.com, password
+test@test.nl, password
+
+
+- components maken voor: CreateAccount en Login, met forms voor gegevens
+- react-router-dom installeren en routes maken
+- firebase auth activeren en instellen
+- firebase sdk installeren in app
+- CreateAccount functies implementeren met firebase
+- Login functies implementeren met firebase
+- Logout functies implementeren met firebase
+
+1. eerst verschillende users implementeren in database
+2. daarna regels schrijven 
+
+rerender fixen, state change loop
