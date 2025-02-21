@@ -6,7 +6,7 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDagO6kX4dg5jONXIkZhqYjW2rPBmBgHRw",
+  apiKey: "",
   authDomain: "todo-list-sa.firebaseapp.com",
   databaseURL: "https://todo-list-sa-default-rtdb.firebaseio.com",
   projectId: "todo-list-sa",
